@@ -3,7 +3,8 @@ import numpy as np
 class Perceptron:
     eps = 1e-4
     threshold = 0
-    """Initializes a perceptron with the following meta-parameters:
+    
+    """ Initializes a perceptron with the following meta-parameters:
     number_of_variables: Number of inputs of each element in the dataset that is going to be used to train the 
                          perceptron.
     learning_rate: Variable used to update the weights of the perceptron when an element is missclassified.
@@ -32,12 +33,12 @@ class Perceptron:
         
     """ Activation function that classifies an element returning 0 or 1."""
     def classification_activation(self, input):
-        return int(np.dot([1] + input, self.weights) > self.threshold)    
+        return int(np.dot(np.append(1, input), self.weights) > self.threshold)    
     
     """ Update function that adjusts the set of weights to adjust the perceptron to a dataset."""
     def update_weights(self, input, target, output):
-        input_with_bias = [1] + input
-        self.weights = [self.weights[i] + self.learning_rate * (target - output) * input_with_bias[i] 
+        input_with_bias = np.append(1, input) 
+        self.weights = [self.weights[i] + self.learning_rate * (target - output) * input_with_bias[i]
                         for i in range(0, len(self.weights))]
     
     """ Error function used in classification models."""
