@@ -8,7 +8,7 @@ class Perceptron:
     number_of_variables: Number of inputs of each element in the dataset that is going to be used to train the 
                          perceptron.
     learning_rate: Variable used to update the weights of the perceptron when an element is missclassified.
-    target_type: "classification" for binary targets and "reggression" for continuous targets.
+    target_type: "classification" for discrete targets and "regression" for continuous targets.
     """
     def __init__(self, number_of_variables, learning_rate, target_type):
         self.initialize_weights(number_of_variables)
@@ -17,7 +17,7 @@ class Perceptron:
         if target_type == "classification":
             self.activation_function = self.classification_activation
             self.val_function = self.accuracy
-        elif target_type == "reggression":
+        elif target_type == "regression":
             self.activation_function = self.reggression_activation
             self.val_function = self.rmse
         else:
@@ -29,7 +29,7 @@ class Perceptron:
     
     """ Activation function used in regression problems that returns a float number."""
     def reggression_activation(self, input):
-        return np.dot([1] + input, self.weights)
+        return np.dot(np.append(1, input), self.weights)
         
     """ Activation function that classifies an element returning 0 or 1."""
     def classification_activation(self, input):

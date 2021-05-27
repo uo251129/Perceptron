@@ -10,11 +10,13 @@ dataset_size: number of elements that will be generated for the dataset.
 number_of_variables: dimensionality of the dataset.
 test_split: Percentage within 0 and 1 that determines the size of the training and testing sets.
 number_of_iterations: Number of times that the training process will be repeated for the preceptron.
+target_type: If "classification", the generated target variable will be discrete. If "regression", it will be 
+            continous.
 learning_rate: Meta-parameter of the perceptron model.
 verbose: If set to false, the function will not print anything in the console. 
 """
-def testing_perceptron_classification(dataset_size, number_of_variables, test_split, number_of_iterations, 
-                                      learning_rate = 0.05, verbose = True):
+def test_perceptron(dataset_size, number_of_variables, test_split, number_of_iterations, 
+                                      target_type, learning_rate = 0.05, verbose = True):
     m = np.random.uniform(-1, 1, number_of_variables)
     b = np.random.uniform(-1, 1)
     
@@ -22,7 +24,11 @@ def testing_perceptron_classification(dataset_size, number_of_variables, test_sp
     
     inputs = [np.random.uniform(-1, 1, number_of_variables) for i in range(0, dataset_size)]
     
-    targets = [int(linear_function(input) > 0) for input in inputs]
+    if target_type == "classification":
+        targets = [int(linear_function(input) > 0) for input in inputs]
+    elif target_type == "regression":
+        targets = [linear_function(input) for input in inputs]
+        
     
     x_train = inputs[0:math.floor(test_split * dataset_size)]
     x_test = inputs[math.floor(test_split * dataset_size):dataset_size]
@@ -30,7 +36,7 @@ def testing_perceptron_classification(dataset_size, number_of_variables, test_sp
     y_train = targets[0:math.floor(test_split  * dataset_size)]
     y_test = targets[math.floor(test_split * dataset_size):dataset_size]
     
-    perceptron = Perceptron(number_of_variables, learning_rate, "classification")
+    perceptron = Perceptron(number_of_variables, learning_rate, target_type)
     
     train_accuracy = perceptron.train(x_train, y_train, number_of_iterations)
     
